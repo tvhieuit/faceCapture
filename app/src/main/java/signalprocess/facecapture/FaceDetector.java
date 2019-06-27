@@ -69,6 +69,7 @@ public class FaceDetector {
 
     private void solveFacePose(ArrayList<Point> landmarks) {
         //Log.d(TAG, "analyze emotion");
+        if(landmarks == null || landmarks.size() == 0) return;
 
         Point leftEye, rightEye, noseTip, mouthLeft, mouthRight;
         leftEye = landmarks.get(36);
@@ -164,6 +165,7 @@ public class FaceDetector {
 
     private void solveEmotion(ArrayList<Point> landmarks, int width) {
         //mouth open
+        if(landmarks == null || landmarks.size() == 0) return;
         this.mActivity.emotion[3] = (double)(landmarks.get(57).y-landmarks.get(51).y) /
                 (landmarks.get(64).x-landmarks.get(60).x) - 0.2;
     }
