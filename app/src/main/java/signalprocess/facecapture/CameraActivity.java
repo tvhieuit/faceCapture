@@ -14,6 +14,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.Switch;
 
 
 public class CameraActivity extends AppCompatActivity {
@@ -47,18 +49,14 @@ public class CameraActivity extends AppCompatActivity {
         mCameraPreview = (CameraPreview) findViewById(R.id.cam_preview);
         mCameraPreview.init(this);
 
-//        mGLSurfaceView = (Live2dGLSurfaceView) findViewById(R.id.live2d_gl);
-//        mGLSurfaceView.init(this);
-
         this.mGesDetect = new GestureDetector(this, new DoubleTapGestureDetector());
-
         final String MODEL_PATH = "live2d/haru/haru.moc";
         final String[] TEXTURE_PATHS = {
                 "live2d/haru/haru.1024/texture_00.png",
                 "live2d/haru/haru.1024/texture_01.png",
                 "live2d/haru/haru.1024/texture_02.png"
         };
-        RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+        RelativeLayout container = (RelativeLayout) findViewById(R.id.abc);
         mGLSurfaceView = new Live2dGLSurfaceView(CameraActivity.this);
         mGLSurfaceView.init(CameraActivity.this, MODEL_PATH, TEXTURE_PATHS, 1, 1);
         container.addView(mGLSurfaceView);
@@ -68,6 +66,14 @@ public class CameraActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 mGesDetect.onTouchEvent(event);
                 return true;
+            }
+        });
+
+        ((View) findViewById(R.id.seekbar)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Switch sw = ( Switch) view;
+                emotion[3] = sw.isChecked() ? 1 : 0;
             }
         });
     }
@@ -85,7 +91,7 @@ public class CameraActivity extends AppCompatActivity {
                         "live2d/haru/haru.1024/texture_01.png",
                         "live2d/haru/haru.1024/texture_02.png"
                 };
-                RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+                RelativeLayout container = (RelativeLayout) findViewById(R.id.abc);
                 container.removeView(mGLSurfaceView);
                 mGLSurfaceView = new Live2dGLSurfaceView(CameraActivity.this);
                 mGLSurfaceView.init(CameraActivity.this, MODEL_PATH, TEXTURE_PATHS, 1, 1);
@@ -107,7 +113,7 @@ public class CameraActivity extends AppCompatActivity {
                         "live2d/shizuku/shizuku.1024/texture_03.png",
                         "live2d/shizuku/shizuku.1024/texture_04.png"
                 };
-                RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+                RelativeLayout container = (RelativeLayout) findViewById(R.id.abc);
                 container.removeView(mGLSurfaceView);
                 mGLSurfaceView = new Live2dGLSurfaceView(CameraActivity.this);
                 mGLSurfaceView.init(CameraActivity.this, MODEL_PATH, TEXTURE_PATHS, 1.5f, 1.5f);

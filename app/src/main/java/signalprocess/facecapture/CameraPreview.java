@@ -27,6 +27,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Size;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -51,8 +52,8 @@ public class CameraPreview extends SurfaceView
 
     private FaceDetector mFaceDetector;
 
-    //private int pWidth = 480, pHeight = 320;
-    private int pWidth = 352, pHeight = 288;
+    private int pWidth = 480, pHeight = 320;
+//    private int pWidth = 352, pHeight = 288;
     public int bufferSize;
     public byte[] buffer;
 
@@ -102,7 +103,9 @@ public class CameraPreview extends SurfaceView
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.d(TAG, "surface changed.");
-        initCamera();
+//        pWidth = width;
+//        pHeight = height;
+        initCamera(pWidth, pHeight);
     }
 
     @Override
@@ -116,7 +119,7 @@ public class CameraPreview extends SurfaceView
         }
     }
 
-    private void initCamera() {
+    private void initCamera(int width, int height) {
         if (mCamera != null) {
             Log.d(TAG, "camera opened.");
             try {
@@ -133,12 +136,12 @@ public class CameraPreview extends SurfaceView
                     Log.d(TAG, "Preview FPS range: " + s[0] + " -> " + s[1]);
                 }
 
-                params.setPreviewSize(pWidth, pHeight); // 指定preview的大小
+                params.setPreviewSize(width, height); // 指定preview的大小
                 //params.setPreviewFpsRange(7000, 30000);
                 params.setPreviewFormat(ImageFormat.NV21);
                 mCamera.setParameters(params);
 
-                bufferSize = pWidth * pHeight * ImageFormat.getBitsPerPixel(params.getPreviewFormat()) / 8;
+                bufferSize = width * height * ImageFormat.getBitsPerPixel(params.getPreviewFormat()) / 8;
                 buffer = new byte[bufferSize];
 
                 mCamera.addCallbackBuffer(buffer);
@@ -156,6 +159,7 @@ public class CameraPreview extends SurfaceView
         public void onPreviewFrame(byte[] data, Camera camera) {
             //Log.d(TAG, "preview callback.");
             camera.addCallbackBuffer(buffer);
+            //Camera.Size camSize = camera.getParameters().getPictureSize();
             final YuvImage image = new YuvImage(data, ImageFormat.NV21, pWidth, pHeight, null);
             ByteArrayOutputStream os = new ByteArrayOutputStream(data.length);
 
@@ -170,9 +174,9 @@ public class CameraPreview extends SurfaceView
                 new Canvas(dst).drawBitmap(src, matrix, new Paint());
 
                 synchronized (mSurfaceHolder) {
-                    mFaceDetector.getLandmarks(dst);
                     Canvas canvas = mSurfaceHolder.lockCanvas();
                     canvas.drawBitmap(dst, 0, 0, null);
+                    mFaceDetector.getLandmarks(canvas, dst);
                     mSurfaceHolder.unlockCanvasAndPost(canvas);
                 }
 

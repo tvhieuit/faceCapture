@@ -39,6 +39,7 @@ public class FaceDet {
 
     public FaceDet(String landMarkPath) {
         mLandMarkPath = landMarkPath;
+        System.out.println("load predict face detection     " + mLandMarkPath);
         jniInit(mLandMarkPath);
     }
 

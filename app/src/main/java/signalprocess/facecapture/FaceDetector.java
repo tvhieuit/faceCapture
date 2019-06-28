@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.Log;
 
 import com.tzutalin.dlib.Constants;
@@ -41,7 +42,7 @@ public class FaceDetector {
 
     }
 
-    public void getLandmarks(Bitmap bmp) {
+    public void getLandmarks(Canvas canvas, Bitmap bmp) {
         //!!! bmp must be mutable
         //Log.d(TAG, "get face landmarks.");
         List<VisionDetRet> results;
@@ -52,14 +53,27 @@ public class FaceDetector {
                 Log.d(TAG, "no face.");
                 return;
             }
+            Log.d(TAG, "has face.  " + results.size());
             VisionDetRet ret = results.get(0);
             int width = ret.getRight() - ret.getLeft();
             //draw landmarks
             ArrayList<Point> landmarks = ret.getFaceLandmarks();
-            Canvas canvas = new Canvas(bmp);
+
+            Log.d(TAG, "has face:   " + results.size() + " with points:  " + landmarks.size());
+//            Canvas canvas = new Canvas(bmp);
+
+            Rect rect = new Rect(
+                    ret.getLeft(), ret.getTop(), ret.getRight(), ret.getBottom()
+            );
+
             for (Point point : landmarks) {
+                Log.d(TAG,"detect : x = " + point.x + ", y = " + point.y );
                 canvas.drawCircle(point.x, point.y, 1, mLandmarkPaint);
             }
+
+            canvas.drawRect(
+                    rect, mLandmarkPaint
+            );
 
             solveFacePose(landmarks);
             solveEmotion(landmarks, width);

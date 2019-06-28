@@ -6,12 +6,21 @@
              android:layout_height="match_parent"
              android:background="#000"
              tools:context="signalprocess.facecapture.CameraActivity">
+    <RelativeLayout
+        android:id="@+id/abc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <signalprocess.facecapture.CameraPreview
         android:id="@+id/cam_preview"
         android:layout_width="480px"
         android:layout_height="320px" />
-    <!--<signalprocess.facecapture.Live2dGLSurfaceView-->
-        <!--android:id="@+id/live2d_gl"-->
-        <!--android:layout_width="800dp"-->
-        <!--android:layout_height="600dp" />-->
+
+    <Switch
+        android:id="@+id/seekbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:padding="30dp" />
+
 </RelativeLayout>

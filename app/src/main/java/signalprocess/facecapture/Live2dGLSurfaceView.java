@@ -117,11 +117,13 @@ class Live2dRenderer implements GLSurfaceView.Renderer {
         mEyeBlink.updateParam(live2DModel);
         //live2DModel.saveParam();
 
-        live2DModel.setParamFloat(L2DStandardID.PARAM_ANGLE_Z, (float) mActivity.emotion[0], 0.75f);
-        live2DModel.setParamFloat(L2DStandardID.PARAM_ANGLE_X , (float) mActivity.emotion[1], 0.75f);
-        live2DModel.setParamFloat(L2DStandardID.PARAM_ANGLE_Y , (float) mActivity.emotion[2], 0.75f);
-        live2DModel.setParamFloat(L2DStandardID.PARAM_MOUTH_OPEN_Y, (float) mActivity.emotion[3], 0.75f);
-        live2DModel.setParamFloat(L2DStandardID.PARAM_MOUTH_FORM, (float) mActivity.emotion[3], 0.75f);
+        float scale = 0.25f;
+
+        live2DModel.setParamFloat(L2DStandardID.PARAM_ANGLE_Z, (float) mActivity.emotion[0], scale);
+        live2DModel.setParamFloat(L2DStandardID.PARAM_ANGLE_X , (float) mActivity.emotion[1], scale);
+        live2DModel.setParamFloat(L2DStandardID.PARAM_ANGLE_Y , (float) mActivity.emotion[2], scale);
+        live2DModel.setParamFloat(L2DStandardID.PARAM_MOUTH_OPEN_Y, (float) mActivity.emotion[3], scale);
+        live2DModel.setParamFloat(L2DStandardID.PARAM_MOUTH_FORM, (float) mActivity.emotion[3], scale);
 
         live2DModel.setGL(gl);
         live2DModel.update();
